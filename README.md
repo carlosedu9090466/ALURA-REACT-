@@ -1,70 +1,108 @@
-# Getting Started with Create React App
+# Organo - React App com Docker
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Projeto base em **React (JavaScript)** criado com `create-react-app` e totalmente configurado para rodar em **Docker** em qualquer ambiente (Windows, Linux, macOS) com suporte nativo a *Hot Reloading*.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 🚀 Como Executar com Docker (Recomendado)
 
-### `npm start`
+### Pré-requisitos:
+- [Docker](https://www.docker.com/) e [Docker Compose](https://docs.docker.com/compose/) instalados e em execução.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Passos:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+1. Acesse o diretório do projeto:
+   ```bash
+   cd organo
+   ```
 
-### `npm test`
+2. Suba o container com o Docker Compose:
+   ```bash
+   docker compose up --build
+   ```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+3. Acesse a aplicação no seu navegador:
+   👉 **[http://localhost:3000](http://localhost:3000)**
 
-### `npm run build`
+4. Para parar a execução dos containers:
+   ```bash
+   docker compose down
+   ```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## ⚡ Fluxo de Desenvolvimento e Hot Reload
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+O ambiente foi preparado para que você **não precise reiniciar o container a cada alteração de código**.
 
-### `npm run eject`
+### 📋 Guia de Ações no Dia a Dia
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+| Tipo de Alteração | Precisa reiniciar / rebuildar? | Ação Necessária |
+| :--- | :---: | :--- |
+| **Edição de código React** (`src/App.js`, componentes, `.js`, `.css`) | ❌ **NÃO** | Basta salvar o arquivo (`Ctrl + S`). O navegador atualiza instantaneamente. |
+| **Adição de arquivos estáticos** (`public/`, imagens, ícones) | ❌ **NÃO** | Salvar e referenciar normalmente no código. |
+| **Instalação de novas bibliotecas** (ex: `npm install axios`) | ⚠️ **SIM** | Precisa regerar a imagem com `docker compose up --build`. |
+| **Alterações no `Dockerfile` ou `docker-compose.yml`** | ⚠️ **SIM** | Reiniciar com `docker compose up --build`. |
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## 📦 Como Instalar Novas Dependências com Docker
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Quando precisar adicionar um novo pacote (ex: `axios`, `react-icons`, etc.), você tem duas formas:
 
-## Learn More
+### Opção 1: Direto no container ativo (Mais Rápido)
+Com o container rodando, execute no terminal:
+```bash
+docker compose exec organo-app npm install <nome-do-pacote>
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Opção 2: Rebuildando o container
+1. Adicione o pacote localmente no `package.json` ou execute `npm install <nome-do-pacote>` localmente.
+2. Reconstrua e suba o container:
+```bash
+docker compose up --build
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
 
-### Code Splitting
+## 💻 Como Executar Localmente sem Docker
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Caso queira executar diretamente com Node.js na sua máquina:
 
-### Analyzing the Bundle Size
+1. Instale as dependências:
+   ```bash
+   npm install
+   ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+2. Inicie o servidor de desenvolvimento:
+   ```bash
+   npm start
+   ```
 
-### Making a Progressive Web App
+3. Para gerar a build de produção:
+   ```bash
+   npm run build
+   ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+4. Para rodar os testes:
+   ```bash
+   npm test
+   ```
 
-### Advanced Configuration
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## 📁 Estrutura do Projeto
 
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```text
+organo/
+├── .dockerignore        # Arquivos ignorados pelo build do Docker
+├── Dockerfile           # Configuração da imagem Docker
+├── docker-compose.yml   # Orquestração do container de desenvolvimento
+├── package.json         # Dependências e scripts do React
+├── public/              # Arquivos públicos (index.html, manifest, ícones)
+└── src/                 # Código-fonte React em JavaScript
+    ├── App.js
+    ├── App.css
+    ├── index.js
+    └── ...
+```

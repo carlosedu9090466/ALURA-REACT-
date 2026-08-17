@@ -1,0 +1,22 @@
+services:
+  organo-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: organo_react_app
+    ports:
+      - "3000:3000"
+    volumes:
+      # Sincroniza o código local com o container para permitir Hot Reload
+      - .:/app
+      # Preserva o node_modules gerado dentro do container (evita conflitos de SO)
+      - /app/node_modules
+    environment:
+      - WATCHPACK_POLLING=true
+      - CHOKIDAR_USEPOLLING=true
+      - CHOKIDAR_INTERVAL=300
+      - FAST_REFRESH=true
+      - WDS_SOCKET_PORT=0
+    # Necessário para react-scripts não finalizar imediatamente no container
+    stdin_open: true
+    tty: true
