@@ -1,6 +1,6 @@
 import './Banner.css';
 
-function Banner() {
+export const Banner = () => {
     // JSX
     return (
         // className para o mesmo criterio de classe em html e css
@@ -9,5 +9,3 @@ function Banner() {
         </header>
     );
 }
-
-export default Banner;
