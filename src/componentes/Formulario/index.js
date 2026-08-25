@@ -21,7 +21,7 @@ const Formulario = () => {
 
     const aoSalvar = (evento) => {
         evento.preventDefault()
-        console.log('Salvo com sucesso')
+        console.log('Form foi submetido => ', nome, cargo, imagem)
     }
     return (
         <section className='formulario'>
